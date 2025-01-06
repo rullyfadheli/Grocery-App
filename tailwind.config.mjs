@@ -14,6 +14,9 @@ const config = {
         yellowCustom: "#F6BE3F",
         centerElement: "justify-center items-center",
       },
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],
+      },
     },
   },
   plugins: [],
