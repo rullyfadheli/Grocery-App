@@ -8,8 +8,11 @@ const config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        primary: "#A9411D",
+        secondary: "#FFF8EF",
+        tertiary: "#",
+        yellowCustom: "#F6BE3F",
+        centerElement: "justify-center items-center",
       },
     },
   },
