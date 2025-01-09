@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 function LoginForm() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   function handleSubmit(e) {
@@ -22,7 +22,7 @@ function LoginForm() {
       body: JSON.stringify({
         email,
         password,
-        username,
+        email,
       }),
     })
       .then((res) => res.json())
@@ -42,10 +42,10 @@ function LoginForm() {
         <input
           className="my-2 h-12 rounded-md p-2"
           type="text"
-          id="username"
-          name="username"
+          id="email"
+          name="email"
           placeholder="Username"
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <input

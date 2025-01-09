@@ -1,24 +1,7 @@
+const e = require("express");
 const userModels = require("../models/users");
 const bcrypt = require("bcrypt");
-
-async function getUserByEmail(request, response) {
-  try {
-    const email = request.body.email;
-    const data = await userModels.getUserByEmail(email);
-    if (data.length === 0) {
-      return response.status(404).json({
-        message: "User not found",
-      });
-    }
-    response.json({
-      message: "Get user success",
-      data: data[0],
-    });
-  } catch (error) {
-    console.log(error);
-    response.json({ message: "Failed to get user data", error: error });
-  }
-}
+const jwt = require("jsonwebtoken");
 
 async function register(request, response) {
   const { email, password, username, confirmPassword } = request.body;
@@ -47,4 +30,46 @@ async function register(request, response) {
   }
 }
 
-module.exports = { getUserByEmail, register };
+async function login(request, response) {
+  const { email, password } = request.body;
+  const user = await userModels.getUserByEmail(email);
+  const match = await bcrypt.compare(password, user[0][0].password);
+
+  if (!match) {
+    return response.status(400).json({
+      message: "Password is incorrect",
+    });
+  }
+
+  try {
+    const username = user[0][0].username;
+    const userId = user[0][0].id;
+    const userEmail = user[0][0].email;
+    const accessToken = jwt.sign(
+      { userId, username, userEmail },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "60s" }
+    );
+
+    const refreshToken = jwt.sign(
+      { userId, username, userEmail },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "1D" }
+    );
+
+    await userModels.updateRefreshToken(userId, refreshToken);
+
+    response.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return response.json({
+      accessToken: accessToken,
+    });
+  } catch (error) {
+    return response.json({ message: "email is not found" });
+  }
+}
+
+module.exports = { login, register };

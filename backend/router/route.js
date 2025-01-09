@@ -9,4 +9,8 @@ router.get("/users", (request, response) => {
   usersController.getAllUsers(request, response);
 });
 
+router.post("/login", (request, response) => {
+  usersController.login(request, response);
+});
+
 module.exports = router;
