@@ -34,7 +34,7 @@ async function register(request, response) {
     try {
       const data = await userModels.addUser({ email, hashPassword, username });
       response.status(409).json({
-        message: "User already exists",
+        message: "Register user success",
         data: data,
       });
     } catch (error) {
