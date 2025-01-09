@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { redirect } from "next/navigation";
 
 function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -9,34 +10,30 @@ function RegisterForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Password and confirm password do not match");
-      return;
-    }
 
-    fetch("/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        username,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        alert(data.message);
-        if (data.message === "Register user success") {
-          window.location.href = "/login";
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+    try {
+      const response = await fetch("http://localhost:4000/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          username,
+          confirmPassword,
+        }),
       });
+      const data = await response.json();
+      console.log(data);
+      if (data.message === "Register user success") {
+        redirect("/login");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   }
   return (
     <div>
