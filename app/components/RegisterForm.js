@@ -26,6 +26,9 @@ function RegisterForm() {
           confirmPassword,
         }),
       });
+      if (!response.ok) {
+        console.log(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       console.log(data);
       if (data.message === "Register user success") {
@@ -35,6 +38,7 @@ function RegisterForm() {
       console.error("Error:", error);
     }
   }
+
   return (
     <div>
       <form className="flex flex-col my-2">
