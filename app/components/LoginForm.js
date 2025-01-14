@@ -9,12 +9,8 @@ function LoginForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Password and confirm password do not match");
-      return;
-    }
 
-    const response = await fetch("http://grocery-app.my.id/register", {
+    const response = await fetch("http://localhost:4000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,10 +26,10 @@ function LoginForm() {
       <form onSubmit={handleSubmit} className="flex flex-col my-2">
         <input
           className="my-2 h-12 rounded-md p-2"
-          type="text"
+          type="email"
           id="email"
           name="email"
-          placeholder="Username"
+          placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
         />
 
@@ -46,11 +42,11 @@ function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <div className="flex justify-center mt-2 h-12">
+        <span className="flex justify-center mt-2 h-12">
           <button className="bg-primary text-secondary w-full max-w-[50%] rounded-md">
             Login
           </button>
-        </div>
+        </span>
       </form>
       <div className="flex justify-center mt-2">
         <span>Already have an account?</span>

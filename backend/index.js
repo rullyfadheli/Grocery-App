@@ -1,11 +1,19 @@
 const express = require("express");
 const app = express();
 const router = require("./router/route");
+const cors = require("cors");
 const logRequest = require("./middleware/log");
 require("dotenv").config();
 
 app.use(express.json());
 app.use(logRequest);
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use("/", router);
 
 const PORT = process.env.PORT;

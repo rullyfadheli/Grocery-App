@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -10,11 +10,13 @@ function RegisterForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const router = useRouter();
+
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://grocery-app.my.id/register", {
+      const response = await fetch("httpspanlocalhost:4000/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,9 +32,9 @@ function RegisterForm() {
         console.log(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
+
       if (data.message === "Register user success") {
-        redirect("/login");
+        router.push("/login");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -41,7 +43,7 @@ function RegisterForm() {
 
   return (
     <div>
-      <form className="flex flex-col my-2">
+      <form onSubmit={handleSubmit} className="flex flex-col my-2">
         <input
           className="my-2 h-12 rounded-md p-2"
           type="email"
@@ -77,15 +79,11 @@ function RegisterForm() {
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
 
-        <div className="flex justify-center mt-2 h-12">
-          <button
-            onClick={handleSubmit}
-            type="submit"
-            className="bg-primary text-secondary w-full max-w-[50%] rounded-md"
-          >
+        <span className="flex justify-center mt-2 h-12">
+          <button className="bg-primary text-secondary w-full max-w-[50%] rounded-md">
             Register
           </button>
-        </div>
+        </span>
       </form>
       <div className="flex justify-center mt-2">
         <span>Already have an account?</span>
