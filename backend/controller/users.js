@@ -23,7 +23,7 @@ async function register(request, response) {
 
     try {
       const data = await userModels.addUser({ email, hashPassword, username });
-      response.status(409).json({
+      response.status(200).json({
         message: "Register user success",
         data: data,
       });
@@ -49,6 +49,7 @@ async function register(request, response) {
  */ async function login(request, response) {
   const { email, password } = request.body;
   const user = await userModels.getUserByEmail(email);
+
   const match = await bcrypt.compare(password, user[0][0].password);
 
   if (!match) {
@@ -76,7 +77,6 @@ async function register(request, response) {
     await userModels.updateRefreshToken(userId, refreshToken);
 
     response.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
 

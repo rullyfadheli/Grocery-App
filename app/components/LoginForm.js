@@ -7,38 +7,27 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Password and confirm password do not match");
       return;
     }
 
-    fetch("/api/register", {
+    const response = await fetch("http://grocery-app.my.id/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        email,
-        password,
-        email,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        alert(data.message);
-        if (data.message === "Register user success") {
-          window.location.href = "/login";
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+    return data;
   }
   return (
     <div>
-      <form className="flex flex-col my-2">
+      <form onSubmit={handleSubmit} className="flex flex-col my-2">
         <input
           className="my-2 h-12 rounded-md p-2"
           type="text"
@@ -58,11 +47,7 @@ function LoginForm() {
         />
 
         <div className="flex justify-center mt-2 h-12">
-          <button
-            onClick={handleSubmit}
-            type="submit"
-            className="bg-primary text-secondary w-full max-w-[50%] rounded-md"
-          >
+          <button className="bg-primary text-secondary w-full max-w-[50%] rounded-md">
             Login
           </button>
         </div>
