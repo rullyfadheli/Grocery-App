@@ -16,7 +16,7 @@ function RegisterForm() {
     e.preventDefault();
 
     try {
-      const response = await fetch("httpspanlocalhost:4000/register", {
+      const response = await fetch("https://grocery-app.my.id/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,6 +50,7 @@ function RegisterForm() {
           id="email"
           name="email"
           placeholder="Email"
+          required
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
@@ -58,6 +59,7 @@ function RegisterForm() {
           id="username"
           name="username"
           placeholder="Username"
+          required
           onChange={(e) => setUsername(e.target.value)}
         />
 
@@ -67,6 +69,7 @@ function RegisterForm() {
           id="password"
           name="password"
           placeholder="Password"
+          required
           onChange={(e) => setPassword(e.target.value)}
         />
 
@@ -76,6 +79,7 @@ function RegisterForm() {
           id="confirm-password"
           name="confirm-password"
           placeholder="Confirm password"
+          required
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
 
