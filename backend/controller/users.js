@@ -11,7 +11,6 @@ const jwt = require("jsonwebtoken");
  */
 async function register(request, response) {
   const { email, password, username, confirmPassword } = request.body;
-
   if (password !== confirmPassword) {
     response.status(400).json({
       message: "Password does't match",
@@ -47,8 +46,9 @@ async function register(request, response) {
  * @returns {Object} - The response object containing the access token or an error message.
  */ async function login(request, response) {
   const { email, password } = request.body;
+
   const user = await userModels.getUserByEmail(email);
-  console.log(request.body);
+
   const match = await bcrypt.compare(password, user[0][0].password);
 
   if (!match) {

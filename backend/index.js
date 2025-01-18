@@ -14,7 +14,7 @@ app.use(
     credentials: true,
   })
 );
-app.use("/", router);
+app.use("/api", router);
 
 const PORT = process.env.PORT;
 console.log(PORT);
