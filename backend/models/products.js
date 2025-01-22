@@ -20,4 +20,13 @@ async function insertNewProduct(data) {
   }
 }
 
-module.exports = { getAllProducts, insertNewProduct };
+async function getProductByName(name) {
+  try {
+    const query = "SELECT * FROM products WHERE name = ?";
+    dbPool.execute(query, [name]);
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+}
+
+module.exports = { getAllProducts, insertNewProduct, getProductByName };
