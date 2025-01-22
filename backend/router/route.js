@@ -60,4 +60,8 @@ router.post("/add-product", (request, response) => {
   productsController.addProduct(request, response);
 });
 
+router.get("/product-by-name", (request, response) => {
+  productsController.getProductByName(request, response);
+});
+
 module.exports = router;

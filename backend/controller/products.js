@@ -11,7 +11,10 @@ async function addProduct(request, response) {
   const { name, price, description, category } = request.body;
 
   const data = await productsModel.getProductByName(name);
-  if (data.name.toLowerCase() === name.toLowerCase()) {
+
+  const productData = data[0][0];
+
+  if (productData.name === name) {
     return response.status(400).json({ message: "Product already exists" });
   }
 
@@ -28,4 +31,15 @@ async function addProduct(request, response) {
   }
 }
 
-module.exports = { getAllProducts, addProduct };
+async function getProductByName(request, response) {
+  const { name } = request.body;
+
+  try {
+    const data = await productsModel.getProductByName(name);
+    response.status(200).json(data);
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+}
+
+module.exports = { getAllProducts, addProduct, getProductByName };
