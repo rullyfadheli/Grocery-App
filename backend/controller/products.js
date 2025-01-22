@@ -9,9 +9,9 @@ async function getAllProducts(request, response) {
 
 async function addProduct(request, response) {
   const { name, price, description, category } = request.body;
-  const data  = await productsModel.getProductByName(name);
+  const data = await productsModel.getProductByName(name);
 
-  if (data.name.toLowerCase() === name.toLowerCase() ) {
+  if (data.name.toLowerCase() === name.toLowerCase()) {
     return response.status(400).json({ message: "Product already exists" });
   }
   try {

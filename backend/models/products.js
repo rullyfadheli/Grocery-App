@@ -21,12 +21,8 @@ async function insertNewProduct(data) {
 }
 
 async function getProductByName(name) {
-  try {
-    const query = "SELECT * FROM products WHERE name = ?";
-    dbPool.execute(query, [name]);
-  } catch (error) {
-    response.status(500).json({ message: error.message });
-  }
+  const query = "SELECT * FROM products WHERE name = ?";
+  return dbPool.execute(query, [name]);
 }
 
 module.exports = { getAllProducts, insertNewProduct, getProductByName };
