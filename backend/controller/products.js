@@ -9,8 +9,12 @@ const productsModel = require("../models/products");
 async function getAllProducts(request, response) {
   try {
     const data = await productsModel.getAllProducts();
-    response.status(200).json(data);
-  } catch (error) {}
+    response.status(200).json(data[0]);
+  } catch (error) {
+    if (error) {
+      response.status(500).json({ message: error.message });
+    }
+  }
 }
 
 /**
@@ -27,7 +31,7 @@ async function addProduct(request, response) {
 
   const productData = data[0][0];
 
-  if (productData.name === name) {
+  if (productData && productData.name === name) {
     return response.status(400).json({ message: "Product already exists" });
   }
 
@@ -55,10 +59,26 @@ async function addProduct(request, response) {
 
   try {
     const data = await productsModel.getProductByName(name);
-    response.status(200).json(data);
+    response.status(200).json(data[0][0]);
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
 }
 
-module.exports = { getAllProducts, addProduct, getProductByName };
+async function getProductByCategory(request, response) {
+  const { category } = request.body;
+
+  try {
+    const data = await productsModel.getProductByCategory(category);
+    response.status(200).json(data[0]);
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+}
+
+module.exports = {
+  getAllProducts,
+  addProduct,
+  getProductByName,
+  getProductByCategory,
+};

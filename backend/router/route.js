@@ -80,4 +80,15 @@ router.get("/product-by-name", (request, response) => {
   productsController.getProductByName(request, response);
 });
 
+/**
+ * GET request handler for retrieving products by category.
+ *
+ * @param {Object} request - The request object.
+ * @param {Object} response - The response object.
+ * @returns {undefined}
+ */
+router.get("/product-by-category", (request, response) => {
+  productsController.getProductByCategory(request, response);
+});
+
 module.exports = router;

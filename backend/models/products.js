@@ -29,4 +29,18 @@ async function getProductByName(name) {
   }
 }
 
-module.exports = { getAllProducts, insertNewProduct, getProductByName };
+async function getProductByCategory(category) {
+  try {
+    const query = "SELECT * FROM products WHERE LOWER(category) = LOWER(?)";
+    return dbPool.execute(query, [category]);
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+}
+
+module.exports = {
+  getAllProducts,
+  insertNewProduct,
+  getProductByName,
+  getProductByCategory,
+};
