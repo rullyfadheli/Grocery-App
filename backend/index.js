@@ -7,6 +7,7 @@ require("dotenv").config();
 
 app.use(express.json());
 app.use(logRequest);
+app.use("/images", express.static("images"));
 app.use(
   cors({
     origin: "http://localhost:3000",

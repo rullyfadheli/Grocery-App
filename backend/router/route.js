@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const usersController = require("../controller/users");
 const productsController = require("../controller/products");
+const upload = require("../middleware/uploadImage");
 
 // ------------------- Users -------------------
 
@@ -66,7 +67,7 @@ router.get("/all-products", (request, response) => {
  * @param {Object} request - The request object.
  * @param {Object} response - The response object.
  */
-router.post("/add-product", (request, response) => {
+router.post("/add-product", upload, (request, response) => {
   productsController.addProduct(request, response);
 });
 
@@ -91,4 +92,15 @@ router.get("/product-by-category", (request, response) => {
   productsController.getProductByCategory(request, response);
 });
 
+router.post("/upload", upload, (request, response) => {
+  try {
+    if (!request.file) {
+      response.status(400).json({ message: "No file selected" });
+      return;
+    }
+    response.status(200).json({ message: "File uploaded successfully" });
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+});
 module.exports = router;
