@@ -4,6 +4,8 @@ const router = express.Router();
 const usersController = require("../controller/users");
 const productsController = require("../controller/products");
 
+// ------------------- Users -------------------
+
 /**
  * Route serving user registration.
  * @name post/register
@@ -43,6 +45,8 @@ router.post("/login", (request, response) => {
   usersController.login(request, response);
 });
 
+// ------------------- Products -------------------
+
 /**
  * Route serving list of all products.
  * @name get/all-products
@@ -52,12 +56,39 @@ router.post("/login", (request, response) => {
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
+
 router.get("/all-products", (request, response) => {
   productsController.getAllProducts(request, response);
 });
-
+/**
+ * Handles the POST request for adding a product.
+ *
+ * @param {Object} request - The request object.
+ * @param {Object} response - The response object.
+ */
 router.post("/add-product", (request, response) => {
   productsController.addProduct(request, response);
+});
+
+/**
+ * Route to get a product by name.
+ *
+ * @param {object} request - The request object.
+ * @param {object} response - The response object.
+ */
+router.get("/product-by-name", (request, response) => {
+  productsController.getProductByName(request, response);
+});
+
+/**
+ * GET request handler for retrieving products by category.
+ *
+ * @param {Object} request - The request object.
+ * @param {Object} response - The response object.
+ * @returns {undefined}
+ */
+router.get("/product-by-category", (request, response) => {
+  productsController.getProductByCategory(request, response);
 });
 
 module.exports = router;

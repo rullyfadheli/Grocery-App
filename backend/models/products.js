@@ -3,7 +3,7 @@ const dbPool = require("../config/database");
 async function getAllProducts() {
   try {
     const query = "SELECT * FROM products";
-    dbPool.execute(query);
+    return dbPool.execute(query);
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
@@ -20,4 +20,27 @@ async function insertNewProduct(data) {
   }
 }
 
-module.exports = { getAllProducts, insertNewProduct };
+async function getProductByName(name) {
+  try {
+    const query = "SELECT * FROM products WHERE LOWER(name) = LOWER(?)";
+    return dbPool.execute(query, [name]);
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+}
+
+async function getProductByCategory(category) {
+  try {
+    const query = "SELECT * FROM products WHERE LOWER(category) = LOWER(?)";
+    return dbPool.execute(query, [category]);
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+}
+
+module.exports = {
+  getAllProducts,
+  insertNewProduct,
+  getProductByName,
+  getProductByCategory,
+};

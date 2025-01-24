@@ -1,16 +1,18 @@
 {
-  "name": "backend",
+  "name": "grocery-app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "dev": "next dev",
+    "build": "next build",
+    "lint": "next lint"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "backend": "file:",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
