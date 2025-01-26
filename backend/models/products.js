@@ -10,11 +10,11 @@ async function getAllProducts() {
 }
 
 async function insertNewProduct(data) {
-  const { name, price, description, category } = data;
+  const { name, price, description, category, image } = data;
   try {
     const query =
-      "INSERT INTO products (name, price, description, category) VALUES (?, ?, ?, ?)";
-    dbPool.execute(query, [name, price, description, category]);
+      "INSERT INTO products (name, price, description, category, image) VALUES (?, ?, ?, ?, ?)";
+    dbPool.execute(query, [name, price, description, category, image]);
   } catch (error) {
     response.status(500).json({ message: error.message });
   }

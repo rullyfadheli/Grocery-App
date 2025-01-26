@@ -1,4 +1,5 @@
 const productsModel = require("../models/products");
+
 /**
  * Asynchronously retrieves all products.
  *
@@ -25,14 +26,16 @@ async function getAllProducts(request, response) {
  * @returns {Object} - The response object.
  */
 async function addProduct(request, response) {
-  const { name, price, description, category } = request.body;
+  const { name, price, description, category, imageUrl } = request.body;
+
+  let image = `https://grocery-app.my.id/images/${imageUrl.toLowerCase()}`;
 
   const data = await productsModel.getProductByName(name);
 
   const productData = data[0][0];
 
   if (productData && productData.name === name) {
-    return response.status(400).json({ message: "Product already exists" });
+    return response.status(400).json({ message: "Product is already exists" });
   }
 
   try {
@@ -41,6 +44,7 @@ async function addProduct(request, response) {
       price,
       description,
       category,
+      image,
     });
     response.status(200).json({ message: "Product added successfully" });
   } catch (error) {
