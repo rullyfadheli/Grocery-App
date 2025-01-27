@@ -50,10 +50,13 @@ function UploadForm() {
     formData.append("category", category);
 
     try {
-      const response = await fetch("http://localhost:4000/api/add-product", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://grocery-app.my.id/api/add-product",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
 
