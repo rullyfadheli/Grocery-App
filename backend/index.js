@@ -3,9 +3,11 @@ const app = express();
 const router = require("./router/route");
 const cors = require("cors");
 const logRequest = require("./middleware/log");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(logRequest);
 app.use("/images", express.static("images"));
 app.use(

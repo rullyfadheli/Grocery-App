@@ -4,6 +4,7 @@ const router = express.Router();
 const usersController = require("../controller/users");
 const productsController = require("../controller/products");
 const upload = require("../middleware/uploadImage");
+const generateAccessToken = require("../controller/generateAccessToken");
 
 // ------------------- Users -------------------
 
@@ -44,6 +45,16 @@ router.get("/users", (request, response) => {
  */
 router.post("/login", (request, response) => {
   usersController.login(request, response);
+});
+
+/**
+ * GET /token route handler.
+ *
+ * @param {object} request - The request object.
+ * @param {object} response - The response object.
+ */
+router.get("/token", (request, response) => {
+  generateAccessToken(request, response);
 });
 
 // ------------------- Products -------------------
