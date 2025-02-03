@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const usersController = require("../controller/users");
 const productsController = require("../controller/products");
+const verifyToken = require("../middleware/verifyToken");
 const upload = require("../middleware/uploadImage");
 const generateAccessToken = require("../controller/generateAccessToken");
 
@@ -78,7 +79,7 @@ router.get("/all-products", (request, response) => {
  * @param {Object} request - The request object.
  * @param {Object} response - The response object.
  */
-router.post("/add-product", upload, (request, response) => {
+router.post("/add-product", verifyToken, upload, (request, response) => {
   productsController.addProduct(request, response);
 });
 
