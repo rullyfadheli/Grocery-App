@@ -10,7 +10,7 @@ function LoginForm() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const response = await fetch("https://grocery-app.my.id/login", {
+    const response = await fetch("https://grocery-app.my.id/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,6 +19,7 @@ function LoginForm() {
     });
 
     const data = await response.json();
+    console.log(data);
     return data;
   }
   return (

@@ -11,6 +11,8 @@ function UploadForm() {
   const [message, setMessage] = useState("");
   const [fileName, setFileName] = useState("");
 
+  console.log(message);
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
@@ -48,12 +50,20 @@ function UploadForm() {
     formData.append("price", price);
     formData.append("description", description);
     formData.append("category", category);
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJuYW1lIjoiUnVsbHlGYSIsInVzZXJFbWFpbCI6InJ1bGx5ZmFkaGVsaUBnbWFpbC5jb20iLCJpY";
 
     try {
       const response = await fetch(
         "https://grocery-app.my.id/api/add-product",
         {
           method: "POST",
+          headers: {
+            authorization: `Bearer ${encodeURIComponent(
+              // token +
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJuYW1lIjoiUnVsbHlGYSIsInVzZXJFbWFpbCI6InJ1bGx5ZmFkaGVsaUBnbWFpbC5jb20iLCJpYXQiOjE3Mzg3NDMxMjgsImV4cCI6MTczODc0MzE4OH0.BVvkQByw0m6RDLgwxa5CV86R7md4FeUCMz66THmpQDo"
+            )}`,
+          },
           body: formData,
         }
       );

@@ -80,7 +80,15 @@ router.get("/all-products", (request, response) => {
  * @param {Object} response - The response object.
  */
 router.post("/add-product", verifyToken, upload, (request, response) => {
-  productsController.addProduct(request, response);
+  try {
+    if (!request.file) {
+      response.status(400).json({ message: "No file selected" });
+      return;
+    }
+    productsController.addProduct(request, response);
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
 });
 
 /**
