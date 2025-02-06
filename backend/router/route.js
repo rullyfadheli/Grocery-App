@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const usersController = require("../controller/users");
+const cartController = require("../controller/cart");
 const productsController = require("../controller/products");
 const verifyToken = require("../middleware/verifyToken");
 const upload = require("../middleware/uploadImage");
@@ -122,5 +123,34 @@ router.post("/upload", upload, (request, response) => {
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
+});
+
+// ------------------- Cart -------------------
+
+router.post("/add-to-cart", (request, response) => {
+  cartController.addToCart(request, response);
+});
+
+router.get("/get-all-cart-items", (request, response) => {
+  cartController.getAllCartItems(request, response);
+});
+
+router.post("/increase-item-cart-quantity", (request, response) => {
+  cartController.increaseItemCartQuantity(request, response);
+});
+
+router.post("/decrease-item-cart-quantity", (request, response) => {
+  cartController.decreaseItemCartQuantitycreaseItemCartQuantity(
+    request,
+    response
+  );
+});
+
+router.get("/get-product-cart-by-id", (request, response) => {
+  cartController.getProductCartById(request, response);
+});
+
+router.delete("/delete-cart-item", (request, response) => {
+  cartController.deleteCartItem(request, response);
 });
 module.exports = router;
