@@ -5,6 +5,7 @@ const usersController = require("../controller/users");
 const cartController = require("../controller/cart");
 const productsController = require("../controller/products");
 const verifyToken = require("../middleware/verifyToken");
+const verifyAdminToken = require("../middleware/verifyAdminToken");
 const upload = require("../middleware/uploadImage");
 const generateAccessToken = require("../controller/generateAccessToken");
 
@@ -32,7 +33,7 @@ router.post("/register", (request, response) => {
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.get("/users", (request, response) => {
+router.get("/users", verifyAdminToken, (request, response) => {
   usersController.getAllUsers(request, response);
 });
 
@@ -59,6 +60,10 @@ router.get("/token", (request, response) => {
   generateAccessToken(request, response);
 });
 
+router.delete("/logout", (request, response) => {
+  usersController.logout(request, response);
+});
+
 // ------------------- Products -------------------
 
 /**
@@ -80,7 +85,7 @@ router.get("/all-products", (request, response) => {
  * @param {Object} request - The request object.
  * @param {Object} response - The response object.
  */
-router.post("/add-product", verifyToken, upload, (request, response) => {
+router.post("/add-product", verifyAdminToken, upload, (request, response) => {
   try {
     if (!request.file) {
       response.status(400).json({ message: "No file selected" });
@@ -113,44 +118,95 @@ router.get("/product-by-category", (request, response) => {
   productsController.getProductByCategory(request, response);
 });
 
-router.post("/upload", upload, (request, response) => {
-  try {
-    if (!request.file) {
-      response.status(400).json({ message: "No file selected" });
-      return;
-    }
-    response.status(200).json({ message: "File uploaded successfully" });
-  } catch (error) {
-    response.status(500).json({ message: error.message });
-  }
-});
-
 // ------------------- Cart -------------------
 
-router.post("/add-to-cart", (request, response) => {
+/**
+ * Route to add an item to the cart.
+ * @name post/add-to-cart
+ * @function
+ * @memberof module:router/route
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.post("/add-to-cart", verifyToken, (request, response) => {
   cartController.addToCart(request, response);
 });
 
-router.get("/get-all-cart-items", (request, response) => {
+/**
+ * Route to get all items in the cart.
+ * @name get/get-all-cart-items
+ * @function
+ * @memberof module:router/route
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.get("/get-all-cart-items", verifyToken, (request, response) => {
   cartController.getAllCartItems(request, response);
 });
 
-router.post("/increase-item-cart-quantity", (request, response) => {
-  cartController.increaseItemCartQuantity(request, response);
-});
+/**
+ * Route to increase the quantity of an item in the cart.
+ * @name post/increase-item-cart-quantity
+ * @function
+ * @memberof module:router/route
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.post(
+  "/increase-item-cart-quantity",
+  verifyToken,
+  (request, response) => {
+    cartController.increaseItemCartQuantity(request, response);
+  }
+);
 
-router.post("/decrease-item-cart-quantity", (request, response) => {
-  cartController.decreaseItemCartQuantitycreaseItemCartQuantity(
-    request,
-    response
-  );
-});
+/**
+ * Route to decrease the quantity of an item in the cart.
+ * @name post/decrease-item-cart-quantity
+ * @function
+ * @memberof module:router/route
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.post(
+  "/decrease-item-cart-quantity",
+  verifyToken,
+  (request, response) => {
+    cartController.decreaseItemCartQuantitycreaseItemCartQuantity(
+      request,
+      response
+    );
+  }
+);
 
-router.get("/get-product-cart-by-id", (request, response) => {
+/**
+ * Route to get a product in the cart by its ID.
+ * @name get/get-product-cart-by-id
+ * @function
+ * @memberof module:router/route
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.get("/get-product-cart-by-id", verifyToken, (request, response) => {
   cartController.getProductCartById(request, response);
 });
 
-router.delete("/delete-cart-item", (request, response) => {
+/**
+ * Route to delete an item from the cart.
+ * @name delete/delete-cart-item
+ * @function
+ * @memberof module:router/route
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.delete("/delete-cart-item", verifyToken, (request, response) => {
   cartController.deleteCartItem(request, response);
 });
+
 module.exports = router;

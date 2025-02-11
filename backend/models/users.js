@@ -54,9 +54,15 @@ async function getRefreshToken(refreshToken) {
   return dbPool.execute(query, [refreshToken]);
 }
 
+async function deleteRefreshToken(id) {
+  const query = "UPDATE users set refresh_token = NULL where id = ?";
+  dbPool.execute(query, [id]);
+}
+
 module.exports = {
   getUserByEmail,
   addUser,
   updateRefreshToken,
   getRefreshToken,
+  deleteRefreshToken,
 };

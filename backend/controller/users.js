@@ -20,15 +20,14 @@ async function register(request, response) {
     const hashPassword = await bcrypt.hash(password, salt);
 
     try {
-      const data = await userModels.addUser({ email, hashPassword, username });
+      await userModels.addUser({ email, hashPassword, username });
       response.status(200).json({
         message: "Register user success",
-        data: data,
       });
     } catch (error) {
+      console.log(error);
       response.json({
         message: "User is already exist",
-        error: error,
       });
       console.log(error);
     }
@@ -49,6 +48,9 @@ async function register(request, response) {
 
   const user = await userModels.getUserByEmail(email);
 
+  if (!user[0][0]) {
+    return response.status(400).json({ message: "Email is not found" });
+  }
   const match = await bcrypt.compare(password, user[0][0].password);
 
   if (!match) {
@@ -87,4 +89,25 @@ async function register(request, response) {
   }
 }
 
-module.exports = { login, register };
+async function logout(request, response) {
+  const refreshToken = request.cookies.refreshToken;
+
+  if (!refreshToken) {
+    return response.status(403).json({ message: "refresh token is required" });
+  }
+  const user = await userModels.getRefreshToken(refreshToken);
+
+  if (!user) {
+    return response.status(403).json({ message: "Refresh token is invalid" });
+  }
+
+  const userId = user[0][0].id;
+
+  await userModels.deleteRefreshToken(userId);
+
+  response.clearCookie("refreshToken");
+
+  return response.status(200).json({ message: "Logout success" });
+}
+
+module.exports = { login, register, logout };

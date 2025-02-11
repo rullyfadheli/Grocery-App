@@ -6,10 +6,6 @@ const logRequest = require("./middleware/log");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
-app.use(express.json());
-app.use(cookieParser());
-app.use(logRequest);
-app.use("/images", express.static("images"));
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -17,6 +13,10 @@ app.use(
     credentials: true,
   })
 );
+app.use(express.json());
+app.use(cookieParser());
+app.use(logRequest);
+app.use("/images", express.static("images"));
 app.use("/api", router);
 
 const PORT = process.env.PORT;
