@@ -1,6 +1,8 @@
+require("dotenv").config();
 const userModels = require("../models/users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 /**
  * Registers a user with the provided email, password, username, and confirmPassword.
@@ -110,4 +112,97 @@ async function logout(request, response) {
   return response.status(200).json({ message: "Logout success" });
 }
 
-module.exports = { login, register, logout };
+async function forgetPassword(request, response) {
+  const { email } = request.body;
+
+  console.log(email);
+
+  if (!email) {
+    return response.status(400).json({ message: "Please provide your email" });
+  }
+  const userData = await userModels.getUserByEmail(email);
+
+  if (!userData[0][0]) {
+    return response
+      .status(400)
+      .json({ message: "Email is not found, please register" });
+  }
+
+  const userId = userData[0][0].id;
+  const token = jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "5m",
+  });
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    secure: true,
+    auth: {
+      user: process.env.GMAIL_ACCOUNT,
+      pass: process.env.GOOGLE_APP_PASSWORD,
+    },
+  });
+
+  const receiver = {
+    from: process.env.GMAIL_ACCOUNT,
+    to: email,
+    subject: "Password reset request",
+    text: `Please click this link to reset your password: ${process.env.CLIENT_URL}/reset-password?token=${token}`,
+  };
+
+  transporter.sendMail(receiver, (error, info) => {
+    if (error) {
+      console.log(error);
+      return response
+        .status(400)
+        .json({ message: "Failed to send reset password email" });
+    }
+    console.log("Email sent: " + info.response);
+    return response.status(200).json({
+      message: "Email has sent, please check your email",
+    });
+  });
+}
+
+async function resetPassword(request, response) {
+  // checking the token
+  const { token } = request.body;
+
+  if (!token) {
+    return response.status(400).json({ message: "Invalid token" });
+  }
+
+  // decoding the token to get user id
+  const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+  const { userId } = decoded;
+  // checking if the user exist in the database
+  const userData = await userModels.getUserById(userId);
+  console.log(userData);
+
+  if (!userData[0][0]) {
+    return response
+      .status(400)
+      .json({ message: "Reset password link has expired" });
+  }
+
+  // hashing the new password
+  const newPassword = request.body.password;
+
+  console.log(newPassword);
+
+  const salt = await bcrypt.genSalt();
+  const hashPassword = await bcrypt.hash(newPassword, salt);
+
+  try {
+    // updating the user password in the database
+    await userModels.updatePassword(userId, hashPassword);
+    return response.status(200).json({ message: "Password reset success" });
+  } catch (error) {
+    return response.status(400).json({
+      mesage: "Failed to reset password",
+      error: error.message,
+    });
+  }
+}
+
+module.exports = { login, register, logout, forgetPassword, resetPassword };

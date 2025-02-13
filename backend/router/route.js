@@ -60,8 +60,34 @@ router.get("/token", (request, response) => {
   generateAccessToken(request, response);
 });
 
+/**
+ * Deletes a user's session and logs them out.
+ *
+ * @param {Object} request - The HTTP request object.
+ * @param {Object} response - The HTTP response object.
+ */
 router.delete("/logout", (request, response) => {
   usersController.logout(request, response);
+});
+
+/**
+ * POST request to handle forget password functionality.
+ *
+ * @param {Object} request - The HTTP request object.
+ * @param {Object} response - The HTTP response object.
+ */
+router.post("/forget-password", (request, response) => {
+  usersController.forgetPassword(request, response);
+});
+
+/**
+ * PUT request to reset the user's password.
+ *
+ * @param {Object} request - The request object.
+ * @param {Object} response - The response object.
+ */
+router.put("/reset-password", (request, response) => {
+  usersController.resetPassword(request, response);
 });
 
 // ------------------- Products -------------------

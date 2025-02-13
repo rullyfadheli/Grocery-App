@@ -11,6 +11,16 @@ async function getUserByEmail(email) {
 
   return dbPool.execute(query, [email]);
 }
+/**
+ * Asynchronously retrieves a user by their ID from the database.
+ *
+ * @param {number} id - The ID of the user to retrieve.
+ * @returns {Promise} - A promise that resolves with the user data.
+ */
+async function getUserById(id) {
+  const query = "SELECT * FROM users WHERE id = ?";
+  return dbPool.execute(query, [id]);
+}
 
 /**
  * Adds a user to the database.
@@ -53,16 +63,28 @@ async function getRefreshToken(refreshToken) {
   const query = "SELECT * FROM users WHERE refresh_token = ?";
   return dbPool.execute(query, [refreshToken]);
 }
-
+/**
+ * Asynchronously deletes the refresh token for a user with the given ID.
+ *
+ * @param {number} id - The ID of the user.
+ * @returns {void}
+ */
 async function deleteRefreshToken(id) {
   const query = "UPDATE users set refresh_token = NULL where id = ?";
   dbPool.execute(query, [id]);
 }
 
+async function updatePassword(id, password) {
+  const query = "UPDATE users SET password = ? WHERE id = ?";
+  dbPool.execute(query, [password, id]);
+}
+
 module.exports = {
   getUserByEmail,
+  getUserById,
   addUser,
   updateRefreshToken,
   getRefreshToken,
   deleteRefreshToken,
+  updatePassword,
 };
