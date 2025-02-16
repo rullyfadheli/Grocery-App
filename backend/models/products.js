@@ -29,6 +29,11 @@ async function getProductByName(name) {
   }
 }
 
+async function searchProductByName(name) {
+  const query = "SELECT * FROM products WHERE name LIKE ?";
+  return dbPool.execute(query, [`%${name}%`]);
+}
+
 async function getProductByCategory(category) {
   try {
     const query = "SELECT * FROM products WHERE LOWER(category) = LOWER(?)";
@@ -43,4 +48,5 @@ module.exports = {
   insertNewProduct,
   getProductByName,
   getProductByCategory,
+  searchProductByName,
 };

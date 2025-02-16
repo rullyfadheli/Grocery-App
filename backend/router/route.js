@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const usersController = require("../controller/users");
+const adminController = require("../controller/admin");
 const cartController = require("../controller/cart");
 const productsController = require("../controller/products");
 const verifyToken = require("../middleware/verifyToken");
@@ -9,6 +10,10 @@ const verifyAdminToken = require("../middleware/verifyAdminToken");
 const upload = require("../middleware/uploadImage");
 const generateAccessToken = require("../controller/generateAccessToken");
 
+// ------------------- Admin -------------------
+router.post("/register-admin", (request, response) => {
+  adminController.registerNewAdmin(request, response);
+});
 // ------------------- Users -------------------
 
 /**
@@ -131,6 +136,16 @@ router.post("/add-product", verifyAdminToken, upload, (request, response) => {
  */
 router.get("/product-by-name", (request, response) => {
   productsController.getProductByName(request, response);
+});
+
+/**
+ * Route for searching a product by name.
+ *
+ * @param {Object} request - The request object.
+ * @param {Object} response - The response object.
+ */
+router.get("/search-product", (request, response) => {
+  productsController.searchProductByName(request, response);
 });
 
 /**

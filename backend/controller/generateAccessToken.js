@@ -28,9 +28,10 @@ async function generateAccessToken(request, response) {
         const userId = user[0].idusers;
         const username = user[0].username;
         const userEmail = user[0].email;
+        const role = user[0][0].role;
 
         const accessToken = jwt.sign(
-          { userId, username, userEmail },
+          { userId, username, userEmail, role },
           process.env.ACCESS_TOKEN_SECRET,
           { expiresIn: "60s" }
         );

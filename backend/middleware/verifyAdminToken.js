@@ -4,7 +4,7 @@ function verifyAdminToken(request, response, next) {
   const authHeader = request.headers["authorization"];
 
   if (!authHeader) {
-    return response.status(401).json({ message: "Access denied" });
+    return response.status(401).json({ message: "Access token required" });
   }
 
   const token = authHeader.split("Bearer ")[1];
@@ -15,11 +15,12 @@ function verifyAdminToken(request, response, next) {
       return response.status(403).json({ message: "Access denied" });
     }
 
+    console.log(decoded);
     request.admin = decoded;
 
     next();
   } catch (error) {
-    return response.status(403).json({ message: "Invalid or expired token" });
+    return response.status(403).json({ message: "Access denied" });
   }
 }
 

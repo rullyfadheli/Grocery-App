@@ -13,6 +13,15 @@ const nodemailer = require("nodemailer");
  */
 async function register(request, response) {
   const { email, password, username, confirmPassword } = request.body;
+
+  console.log(request.body);
+
+  if (!email || !password || !username || !confirmPassword) {
+    return response
+      .status(400)
+      .json({ message: "Please fill required fields" });
+  }
+
   if (password !== confirmPassword) {
     response.status(400).json({
       message: "Password does't match",
@@ -65,14 +74,15 @@ async function register(request, response) {
     const username = user[0][0].username;
     const userId = user[0][0].id;
     const userEmail = user[0][0].email;
+    const role = user[0][0].role;
     const accessToken = jwt.sign(
-      { userId, username, userEmail },
+      { userId, username, userEmail, role },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "60s" }
     );
 
     const refreshToken = jwt.sign(
-      { userId, username, userEmail },
+      { userId, username, userEmail, role },
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: "1D" }
     );
@@ -187,8 +197,6 @@ async function resetPassword(request, response) {
 
   // hashing the new password
   const newPassword = request.body.password;
-
-  console.log(newPassword);
 
   const salt = await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(newPassword, salt);
