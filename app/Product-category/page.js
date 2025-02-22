@@ -1,31 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import CategorySidebar from "../components/CategorySidebar";
 import ProductList from "../components/ProductList";
+import { useRouter } from "next/router";
 
-export default function Home() {
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-
-  useEffect(() => {
-    fetch("https://grocery-app.my.id/api/all-products")
-      .then((res) => res.json())
-      .then((data) => {
-        const categoryList = [...new Set(data.map((item) => item.category))];
-        setCategories(categoryList);
-        setProducts(data);
-      });
-  }, []);
-
-  const filteredProducts = selectedCategory
-    ? products.filter((product) => product.category === selectedCategory)
-    : products;
+export default function ProductCategory() {
+  const params = useSearchParams().get("category");
+  const decoded = decodeURIComponent(params);
 
   return (
-    <div className="flex">
-      <CategorySidebar categories={categories} onSelectCategory={setSelectedCategory} />
-      <ProductList products={filteredProducts} />
+    <div className="flex bg-tertiary">
+      <CategorySidebar />
+      <ProductList productCategory={decoded} />
     </div>
   );
 }
