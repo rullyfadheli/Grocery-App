@@ -144,7 +144,7 @@ router.get("/product-by-name", (request, response) => {
  * @param {Object} request - The request object.
  * @param {Object} response - The response object.
  */
-router.get("/search-product", (request, response) => {
+router.post("/search-product", (request, response) => {
   productsController.searchProductByName(request, response);
 });
 
@@ -155,7 +155,7 @@ router.get("/search-product", (request, response) => {
  * @param {Object} response - The response object.
  * @returns {undefined}
  */
-router.get("/product-by-category", (request, response) => {
+router.post("/product-by-category", (request, response) => {
   productsController.getProductByCategory(request, response);
 });
 

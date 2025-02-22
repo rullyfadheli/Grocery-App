@@ -57,6 +57,12 @@ async function register(request, response) {
  */ async function login(request, response) {
   const { email, password } = request.body;
 
+  if (!email || !password) {
+    return response
+      .status(400)
+      .json({ message: "Please fill required fields" });
+  }
+
   const user = await userModels.getUserByEmail(email);
 
   if (!user[0][0]) {
@@ -166,7 +172,9 @@ async function forgetPassword(request, response) {
         .status(400)
         .json({ message: "Failed to send reset password email" });
     }
+
     console.log("Email sent: " + info.response);
+
     return response.status(200).json({
       message: "Email has sent, please check your email",
     });

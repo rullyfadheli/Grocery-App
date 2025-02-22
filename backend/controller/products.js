@@ -28,6 +28,12 @@ async function getAllProducts(request, response) {
 async function addProduct(request, response) {
   const { name, price, description, category, imageUrl } = request.body;
 
+  if (!name || !price || !description || !category || !imageUrl) {
+    return response
+      .status(400)
+      .json({ message: "Please fill required fields" });
+  }
+
   let image = `https://grocery-app.my.id/images/${imageUrl.toLowerCase()}`;
 
   const data = await productsModel.getProductByName(name);
