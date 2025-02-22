@@ -1,0 +1,22 @@
+
+
+      
+
+
+
+
+      
+      {/* Bottom Navigation */}
+      {/* <nav className="fixed bottom-0 left-0 w-full bg-white shadow flex justify-around py-4">
+        {[
+          { icon: '/home.png', label: 'Home', active: true },
+          { icon: '/Favorite.png', label: 'Favorites', active: false },
+          { icon: '/cart.png', label: 'Cart', active: false },
+          { icon: '/Acount.png', label: 'Account', active: false },
+        ].map((item, index) => (
+          <div key={index} className={`text-center ${item.active ? 'text-primary' : 'text-gray-500'}`}>
+            <span className="material-icons">{item.icon}</span>
+            <p className="text-xs">{item.label}</p>
+          </div>
+        ))}
+      </nav> */}
