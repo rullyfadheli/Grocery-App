@@ -9,8 +9,8 @@ const config = {
     extend: {
       colors: {
         primary: "#A9411D",
-        secondary: "#FFF8EF",
-        tertiary: "#",
+        secondary: "#EBE5DD",
+        tertiary: "#FFF8EF",
         yellowCustom: "#F6BE3F",
       },
       fontFamily: {
