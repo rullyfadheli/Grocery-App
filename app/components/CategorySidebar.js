@@ -1,10 +1,13 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+import { SearchProductContext } from "../context/AppContext";
 import { useSearchParams, useRouter } from "next/navigation";
 import { productCategoryData } from "../product-category-data";
 
 const CategorySidebar = () => {
+  const { setToggleSearchResult, setSearchClick } =
+    useContext(SearchProductContext);
   const data = productCategoryData;
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
@@ -23,6 +26,8 @@ const CategorySidebar = () => {
               setActive(items.name);
               params.set("category", "");
               params.set("category", items.name);
+              setToggleSearchResult(false);
+              setSearchClick(false);
               router.push(`http://localhost:3000/product-category?${params}`);
             }}
           >
