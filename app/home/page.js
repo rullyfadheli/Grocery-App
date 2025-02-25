@@ -8,8 +8,8 @@ import { productCategoryData } from "../product-category-data";
 export default function Home() {
   return (
     <div className="min-h-screen md:justify-center md:flex bg-[#A9411D] w-full">
-      <div className="font-inter w-full max-w-3xl bg-[#EBE5DD] p-6">
-        <div className="pb-40 w-full max-w-[680px] bg-secondary font-inter">
+      <div className="font-inter w-full max-w-[1080px] bg-[#EBE5DD] p-6">
+        <div className="pb-40 w-full max-w-[1080px] bg-secondary font-inter">
           {/* header */}
           <header className="bg-secondary py-4 px-6 flex justify-between items-center">
             <div className="flex items-center gap-2">
