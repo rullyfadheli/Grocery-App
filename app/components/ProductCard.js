@@ -1,17 +1,17 @@
 import Image from "next/image";
 
 const ProductCard = ({ product }) => {
-  async function addToCart(cart) {
-    const { productId, userId, quantity } = cart;
-    const response = await fetch("https://grocery-app.my.id/api/add-to-cart", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.parse({ productId, userId, quantity }),
-    });
-    const data = await response.json();
-  }
+  // async function addToCart(cart) {
+  //   const { productId, userId, quantity } = cart;
+  //   const response = await fetch("https://grocery-app.my.id/api/add-to-cart", {
+  //     method: "POST",
+  //     headers: { "content-type": "application/json" },
+  //     body: JSON.parse({ productId, userId, quantity }),
+  //   });
+  //   const data = await response.json();
+  // }
   return (
-    <div className="relative flex flex-col w-full max-w-32 min-h-52 items-center bg-secondary rounded-md shadow p-2 font-inter">
+    <div className="relative flex flex-col w-full max-w-32 min-h-52 max-h-52 items-center bg-secondary rounded-md shadow p-2 font-inter">
       <div className="h-28 w-28 flex justify-center items-center rounded-md bg-primary">
         <Image
           src={product.image}
