@@ -4,12 +4,11 @@ import { useContext } from "react";
 function SearchProductResult() {
   const { searchResult } = useContext(SearchProductContext);
   console.log(searchResult);
-  console.log(typeof searchResult);
   return (
     <div className="w-3/4">
       <div className="gap-4 flex flex-wrap p-2 w-full ">
         {searchResult &&
-          searchResult.data.map((product) => (
+          searchResult.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
       </div>
