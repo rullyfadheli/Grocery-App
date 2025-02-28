@@ -90,6 +90,10 @@ async function searchProductByName(request, response) {
   const { name } = request.body;
   try {
     const data = await productsModel.searchProductByName(name);
+    if (data[0].length === 0) {
+      return response.status(404).json({ message: "Product not found" });
+    }
+
     return response.status(200).json(data[0]);
   } catch (error) {
     return response.status(500).json({ message: error.message });
