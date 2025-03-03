@@ -89,9 +89,14 @@ async function getProductByCategory(request, response) {
 async function searchProductByName(request, response) {
   const { name } = request.body;
   try {
+    if (name === "") {
+      return response
+        .status(400)
+        .json({ message: "Please fill requiered input" });
+    }
     const data = await productsModel.searchProductByName(name);
     if (data[0].length === 0) {
-      return response.status(404).json({ message: "Product not found" });
+      return response.status(404).json("Product not found");
     }
 
     return response.status(200).json(data[0]);
