@@ -3,11 +3,12 @@ import CheckoutCard from "../components/CheckoutCard";
 import ProductCard from "../components/ProductCard";
 import ApplyCoupon from "../components/ApplyCoupon";
 import Image from "next/image";
+import PriceList from "../components/PriceList";
 const data = { image: "/attarice.png", price: 5.99, name: "Rice" };
 function ShoppingCart() {
   return (
-    <div className="bg-primary w-full h-screen flex justify-center font-inter">
-      <div className="bg-secondary h-screen w-full max-w-[1080px] p-6">
+    <div className="bg-primary w-full h-content md:h-screen flex justify-center font-inter">
+      <div className="bg-secondary h-content w-full max-w-[1080px] p-6 pb-6">
         <TopNavigation
           contentLeft={
             <Image
@@ -36,6 +37,9 @@ function ShoppingCart() {
 
         {/* Apply coupun */}
         <ApplyCoupon />
+
+        {/* Price List */}
+        <PriceList />
       </div>
     </div>
   );
