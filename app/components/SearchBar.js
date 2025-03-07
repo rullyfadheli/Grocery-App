@@ -1,45 +1,73 @@
 "use client";
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SearchProductContext } from "../context/AppContext";
+import Link from "next/link";
 function SearchBar() {
-  const {
-    searchRequestData,
-    setSearchRequestData,
-    searchResult,
-    setSearchResult,
-  } = useContext(SearchProductContext);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Function to search product by name
-  async function handleSearchResult(event) {
+  // State to receive value from input to send as a request value to server
+  const [inputValue, setInputValue] = useState("");
+
+  // State to send fetched data from server to SearchResultProduct.js component
+  const { setSearchRequestData, setSearchResult } =
+    useContext(SearchProductContext);
+
+  function handleSearchResult(event) {
     event.preventDefault();
-    const response = await fetch(
-      "https://grocery-app.my.id/api/search-product",
-      {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ name: searchRequestData }),
+    async function getSearchResult() {
+      setIsLoading(true);
+      setSearchRequestData(inputValue);
+      try {
+        const response = await fetch(
+          "https://grocery-app.my.id/api/search-product",
+          {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ name: inputValue }),
+          }
+        );
+        const data = await response.json();
+        setSearchResult(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Search error:", error);
+      } finally {
+        setIsLoading(false);
       }
-    );
-    const data = await response.json();
-    setSearchResult(data);
-    console.log(searchResult);
+    }
+
+    if (inputValue) {
+      getSearchResult();
+    }
   }
+
   return (
     <form
       onSubmit={handleSearchResult}
-      className="flex justify-between items-center bg-transparent shadow text-black h-12 px-4 py-2 font-inter"
+      className="flex justify-between items-center bg-transparent text-primary h-12 px-4 py-2 font-inter"
     >
+      <Link href={"/"}>
+        <Image
+          src={"/Arrow Left.png"}
+          width={10}
+          height={10}
+          alt="Arrow left icon"
+        />
+      </Link>
       <div></div>
       <input
         placeholder="Search product"
         type="text"
         className="w-[50%] h-8 rounded-md bg-secondary px-4"
+        value={inputValue}
         onChange={(event) => {
-          setSearchRequestData(event.target.value);
+          setInputValue(event.target.value); // Update local state only
         }}
       />
-      <Image src={"/search.png"} width={22} height={22} alt="search icon" />
+      <button type="submit">
+        <Image src={"/search.png"} width={22} height={22} alt="search icon" />
+      </button>
     </form>
   );
 }
