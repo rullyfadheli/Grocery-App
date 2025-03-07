@@ -10,7 +10,7 @@ export default function BottomNav() {
   ];
 
   return (
-    <nav className="text-primary fixed bottom-0 left-0 w-full bg-tertiary shadow flex justify-around py-4">
+    <nav className="text-primary font-inter fixed bottom-0 left-0 w-full bg-tertiary shadow flex justify-around py-4">
       {navItems.map((item, index) => (
         <div key={index} className={`text-center flex flex-col items-center`}>
           <Link href={item.href}>
@@ -19,7 +19,7 @@ export default function BottomNav() {
               alt={item.label}
               width={24}
               height={24}
-              className={`mb-1 ${item.active ? "opacity-100" : "opacity-50"}`} // Efek transparan jika tidak aktif
+              className={`mb-1`}
             />
           </Link>
           <p className="text-xs">{item.label}</p>
