@@ -17,7 +17,6 @@ function HomeProductBanner() {
           src="/cta.png"
           width={40}
           height={60}
-          unoptimized
           alt="World Food Festival"
           className="w-20 h-30 absolute bottom-0 md:right-4 right-0"
         />
