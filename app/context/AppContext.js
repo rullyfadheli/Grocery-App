@@ -7,7 +7,9 @@ const SearchProductProvider = ({ children }) => {
   const [searchRequestData, setSearchRequestData] = useState("");
 
   // State to store search result from server
-  const [searchResult, setSearchResult] = useState();
+  const [searchResult, setSearchResult] = useState({
+    message: "Type something to search",
+  });
 
   //------------------- Only for product-category page -------------------//
 
@@ -19,6 +21,8 @@ const SearchProductProvider = ({ children }) => {
 
   //------------------- Only for home page -------------------//
   const [toggleSearchAnimation, setToggleSearchAnimation] = useState(true);
+
+  const [searchHistory, setSearchHistory] = useState([]);
   return (
     <SearchProductContext.Provider
       value={{
@@ -32,6 +36,8 @@ const SearchProductProvider = ({ children }) => {
         setToggleSearchResult,
         toggleSearchAnimation,
         setToggleSearchAnimation,
+        searchHistory,
+        setSearchHistory,
       }}
     >
       {children}
