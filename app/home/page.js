@@ -4,6 +4,8 @@ import HomeSearchBar from "../components/HomeSearchBar";
 import HomeProductCategories from "../components/HomeProductCategories";
 import HomeProductBanner from "../components/HomeProductBanner";
 import HomeBestDealList from "../components/HomeBestDealList";
+import RegisterOrLoginHeader from "../components/ToggleRegisterAndLoginheader";
+import HomeHeader from "../components/HomeHeader";
 
 export default function Home() {
   return (
@@ -12,7 +14,7 @@ export default function Home() {
         <div className="pb-40 w-full max-w-[1080px] bg-secondary font-inter relative">
           <>
             {/* Header */}
-            <HomeAddressBar />
+            <HomeHeader />
 
             {/* Search Bar */}
             <HomeSearchBar />

@@ -22,6 +22,9 @@ const SearchProductProvider = ({ children }) => {
   //------------------- Only for home page -------------------//
   const [toggleSearchAnimation, setToggleSearchAnimation] = useState(true);
 
+  // store value from search result from HomeSearchBar.js that is executed in SearchResultProduct.js
+  const [querySearchResult, setQuerySearchResult] = useState(null);
+
   const [searchHistory, setSearchHistory] = useState([]);
   return (
     <SearchProductContext.Provider
@@ -38,6 +41,8 @@ const SearchProductProvider = ({ children }) => {
         setToggleSearchAnimation,
         searchHistory,
         setSearchHistory,
+        querySearchResult,
+        setQuerySearchResult,
       }}
     >
       {children}

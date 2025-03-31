@@ -37,7 +37,7 @@ async function register(request, response) {
       });
     } catch (error) {
       console.log(error);
-      response.json({
+      response.status(409).json({
         message: "User is already exist",
       });
       console.log(error);
@@ -57,6 +57,7 @@ async function register(request, response) {
  */ async function login(request, response) {
   const { email, password } = request.body;
 
+  // Checking if the user fill the requiered request data
   if (!email || !password) {
     return response
       .status(400)
@@ -65,11 +66,13 @@ async function register(request, response) {
 
   const user = await userModels.getUserByEmail(email);
 
+  // Validate user login information
   if (!user[0][0]) {
     return response.status(400).json({ message: "Email is not found" });
   }
   const match = await bcrypt.compare(password, user[0][0].password);
 
+  // Send response if password is incorrect
   if (!match) {
     return response.status(400).json({
       message: "Password is incorrect",
@@ -81,12 +84,14 @@ async function register(request, response) {
     const userId = user[0][0].id;
     const userEmail = user[0][0].email;
     const role = user[0][0].role;
+
+    // setting accessToken data
     const accessToken = jwt.sign(
       { userId, username, userEmail, role },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "60s" }
     );
-
+    // setting refreshToken data
     const refreshToken = jwt.sign(
       { userId, username, userEmail, role },
       process.env.REFRESH_TOKEN_SECRET,
@@ -95,37 +100,58 @@ async function register(request, response) {
 
     await userModels.updateRefreshToken(userId, refreshToken);
 
+    // send refreshToken as a cookie
     response.cookie("refreshToken", refreshToken, {
-      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true, // Ensures the cookie is accessible only via HTTP(S), not JavaScript
+      // secure: true, // Ensures the cookie is sent only over HTTPS
+      secure: false,
+      // sameSite: "strict", // Protects against CSRF attacks
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000, // Expiration time
     });
-
-    return response.json({
-      accessToken: accessToken,
-    });
+    // send accessToken after the user succesfully logged in
+    return response.json({ accessToken, refreshToken });
   } catch (error) {
     return response.json({ message: "email is not found" });
   }
 }
 
 async function logout(request, response) {
-  const refreshToken = request.cookies.refreshToken;
+  const refreshToken = request.cookies?.refreshToken;
 
   if (!refreshToken) {
-    return response.status(403).json({ message: "refresh token is required" });
+    return response.status(401).json({ message: "Refresh token is required" });
   }
+
+  // Validate refreshToken
+  if (typeof refreshToken !== "string" || refreshToken.trim() === "") {
+    return response.status(400).json({ message: "Invalid refresh token" });
+  }
+
   const user = await userModels.getRefreshToken(refreshToken);
 
-  if (!user) {
+  // Handle cases where user is not found
+  if (!user || !user[0] || !user[0][0]) {
     return response.status(403).json({ message: "Refresh token is invalid" });
   }
 
-  const userId = user[0][0].id;
+  try {
+    const userId = user[0][0].id;
 
-  await userModels.deleteRefreshToken(userId);
+    await userModels.deleteRefreshToken(userId);
 
-  response.clearCookie("refreshToken");
+    // Clear the refreshToken cookie
+    response.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
 
-  return response.status(200).json({ message: "Logout success" });
+    return response.status(200).json({ message: "Logout success" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return response.status(502).json({ message: "Server error occurred" });
+  }
 }
 
 async function forgetPassword(request, response) {

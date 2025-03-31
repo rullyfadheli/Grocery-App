@@ -10,7 +10,7 @@ function SearchBar() {
   const [inputValue, setInputValue] = useState("");
 
   // State to send fetched data from server to SearchResultProduct.js component
-  const { setSearchRequestData, setSearchResult } =
+  const { setSearchRequestData, setSearchResult, setQuerySearchResult } =
     useContext(SearchProductContext);
 
   function handleSearchResult(event) {
@@ -28,6 +28,10 @@ function SearchBar() {
           }
         );
         const data = await response.json();
+        //update querySearchResult to null
+        setQuerySearchResult(null);
+
+        // store searchResult data
         setSearchResult(data);
         console.log(data);
       } catch (error) {

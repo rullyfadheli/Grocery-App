@@ -7,11 +7,14 @@ import NotFoundMessage from "./elements/NotFoundMessage";
 
 function SearchProductResult({ searchQuery }) {
   // State to store fetched data from SearchBar.js at page product-category
-  const { searchResult, setSearchResult } = useContext(SearchProductContext);
+  const {
+    searchResult,
+    setSearchResult,
+    querySearchResult,
+    setQuerySearchResult,
+  } = useContext(SearchProductContext);
   console.log("searchQuery:", searchQuery);
 
-  // State to store fetched data from HomeSearchBar.js at page home
-  const [querySearchResult, setQuerySearchResult] = useState(null);
   console.log(querySearchResult);
   // State to manage loading status
   const [loading, setLoading] = useState(false);
@@ -38,6 +41,7 @@ function SearchProductResult({ searchQuery }) {
           );
           const data = await response.json();
           setQuerySearchResult(data);
+          setSearchResult({ message: "Type something to search" });
           setLoading(false); // Set loading to false when fetching is complete
         } catch (error) {
           console.log(error);
@@ -65,8 +69,7 @@ function SearchProductResult({ searchQuery }) {
       ) : (
         // Display products or message after loading
         <>
-          {searchResult &&
-          (!querySearchResult || !Array.isArray(querySearchResult)) ? (
+          {searchResult && !Array.isArray(querySearchResult) ? (
             <div
               className={`gap-4 flex-wrap p-2 w-full ${
                 searchResult ? "flex " : "hidden"
@@ -80,7 +83,7 @@ function SearchProductResult({ searchQuery }) {
                 <NotFoundMessage data={searchResult?.message} />
               )}
             </div>
-          ) : querySearchResult && Array.isArray(querySearchResult) ? (
+          ) : querySearchResult && !Array.isArray(searchResult) ? (
             <div
               className={`gap-4 flex-wrap p-2 w-full ${
                 querySearchResult ? "flex " : "hidden"

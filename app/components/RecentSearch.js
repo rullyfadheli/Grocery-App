@@ -23,9 +23,16 @@ function RecentSearch() {
                 href={`/product-category?search=${historyData.history}`}
               >
                 <li
-                  className={`p-2 hover:bg-gray-500 bg-secondary rounded-md flex items-center`}
+                  className={`p-2 w-full hover:bg-gray-500 bg-secondary rounded-md flex items-center`}
                 >
-                  {historyData.history}
+                  <p
+                    className="whitespace-nowrap
+                  "
+                  >
+                    {historyData.history.length > 10
+                      ? historyData.history.substring(0, 10) + "..."
+                      : historyData.history}
+                  </p>
                   <Image
                     src={"/Search.png"}
                     width={20}

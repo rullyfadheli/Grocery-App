@@ -15,6 +15,7 @@ const config = {
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
+        rubik: ["Rubik Gemstones", "sans-serif"],
       },
     },
   },

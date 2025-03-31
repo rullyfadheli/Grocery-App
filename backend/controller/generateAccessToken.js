@@ -3,7 +3,9 @@ const userModels = require("../models/users");
 require("dotenv").config();
 
 async function generateAccessToken(request, response) {
-  const refreshToken = request.cookies.refreshToken;
+  const data = request.headers.authorization;
+  const refreshToken = data.replace("Bearer ", "");
+  console.log(refreshToken);
 
   if (!refreshToken) {
     return response.status(403).json({ message: "Refresh token is required" });

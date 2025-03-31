@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -16,11 +17,15 @@ function LoginForm() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
+      credentials: "include",
     });
 
     const data = await response.json();
     console.log(data);
-    return data;
+    localStorage.setItem("refreshToken", data?.refreshToken);
+    if (data?.accessToken) {
+      return (window.location.href = "/home");
+    }
   }
   return (
     <div>
@@ -50,9 +55,9 @@ function LoginForm() {
         </span>
       </form>
       <div className="flex justify-center mt-2">
-        <span>Already have an account?</span>
-        <Link className="mx-2 font-bold text-primary" href="/login">
-          Login
+        <span>{"You don't have account?"}</span>
+        <Link className="mx-2 font-bold text-primary" href="/register">
+          Register
         </Link>
       </div>
     </div>

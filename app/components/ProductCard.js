@@ -11,7 +11,7 @@ const ProductCard = ({ product }) => {
   //   const data = await response.json();
   // }
 
-  console.log(typeof product.price);
+  // console.log(typeof product.price);
   return (
     <div className="relative flex flex-col w-full max-w-[100px] md:max-w-32 min-h-48 md:min-h-52 max-h-52 items-center bg-secondary rounded-md shadow p-2 font-inter">
       <div className="h-24 w-24 md:h-28 md:w-28 flex justify-center items-center rounded-md bg-primary">
