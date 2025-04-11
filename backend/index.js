@@ -16,9 +16,8 @@ app.use(
 );
 app.use(express.json());
 app.use(logRequest);
-app.use("/images", express.static("images"));
 app.use("/api", router);
 
-const PORT = process.env.PORT;
-console.log(PORT);
-app.listen(PORT, () => console.log(`The server is running at PORT ${PORT}`));
+// const PORT = process.env.PORT;
+// console.log(PORT);
+// app.listen(PORT, () => console.log(`The server is running at PORT ${PORT}`));
