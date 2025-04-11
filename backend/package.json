@@ -7,8 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js",
     "dev": "next dev",
-    "build": "next build",
-    "lint": "next lint"
+    "build": "echo 'Build step not needed for Express app'",
+    "lint": "next lint",
+    "vercel-build": "npm run build"
   },
   "author": "",
   "license": "ISC",
