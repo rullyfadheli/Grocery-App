@@ -1,11 +1,12 @@
-const dbPool = require("../config/database");
+const sql = require("../config/database");
 
-async function getAllProducts() {
+async function getAllProductsFromDB() {
   try {
-    const query = "SELECT * FROM products";
-    return dbPool.execute(query);
+    const products = await sql`SELECT * FROM products`;
+    console.log(products);
+    return products;
   } catch (error) {
-    response.status(500).json({ message: error.message });
+    throw new Error(error.message);
   }
 }
 
@@ -16,7 +17,7 @@ async function insertNewProduct(data) {
       "INSERT INTO products (name, price, description, category, image) VALUES (?, ?, ?, ?, ?)";
     dbPool.execute(query, [name, price, description, category, image]);
   } catch (error) {
-    response.status(500).json({ message: error.message });
+    throw new Error(error.message);
   }
 }
 
@@ -25,7 +26,7 @@ async function getProductByName(name) {
     const query = "SELECT * FROM products WHERE LOWER(name) = LOWER(?)";
     return dbPool.execute(query, [name]);
   } catch (error) {
-    response.status(500).json({ message: error.message });
+    throw new Error(error.message);
   }
 }
 
@@ -39,12 +40,12 @@ async function getProductByCategory(category) {
     const query = "SELECT * FROM products WHERE LOWER(category) = LOWER(?)";
     return dbPool.execute(query, [category]);
   } catch (error) {
-    response.status(500).json({ message: error.message });
+    throw new Error(error.message);
   }
 }
 
 module.exports = {
-  getAllProducts,
+  getAllProductsFromDB,
   insertNewProduct,
   getProductByName,
   getProductByCategory,

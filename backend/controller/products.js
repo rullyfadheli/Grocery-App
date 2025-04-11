@@ -9,9 +9,11 @@ const productsModel = require("../models/products");
  */
 async function getAllProducts(request, response) {
   try {
-    const data = await productsModel.getAllProducts();
+    const data = await productsModel.getAllProductsFromDB();
+    console.log(data);
     response.status(200).json(data[0]);
   } catch (error) {
+    console.log(error);
     if (error) {
       response.status(500).json({ message: error.message });
     }

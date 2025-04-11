@@ -163,6 +163,7 @@ async function forgetPassword(request, response) {
     return response.status(400).json({ message: "Please provide your email" });
   }
   const userData = await userModels.getUserByEmail(email);
+  console.log(userData);
 
   if (!userData[0][0]) {
     return response

@@ -1,11 +1,7 @@
-const db = require("mysql2");
+const postgres = require("postgres");
 require("dotenv").config();
 
-const dbPool = db.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USERNAME,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-});
+const connectionString = process.env.DATABASE_URL;
+const sql = postgres(connectionString);
 
-module.exports = dbPool.promise();
+module.exports = sql;
